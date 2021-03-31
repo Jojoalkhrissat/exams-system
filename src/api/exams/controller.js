@@ -1,10 +1,10 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const conn = require("../../models/connect.js").conn;
-const generatepass = require('../../models/generate-password.js').generatepass;
-const userHelper = require("../../models/user-helper.js")
-const genericHelper = require("../../models/generic-helper.js")
-const examHelper = require("../../models/exam-helper.js")
+const generatepass = require('../../utils/generate-password.js').generatepass;
+const userHelper = require("../../utils/user-helper.js")
+const genericHelper = require("../../utils/generic-helper.js")
+const examHelper = require("../../utils/exam-helper.js")
 const services = require('../../services/index.js');
 const mail = require('../../config/index.js').nodemailer;
 const {v4: uuidv4} = require('uuid');

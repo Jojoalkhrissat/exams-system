@@ -1,7 +1,7 @@
 const conn = require("../models/connect.js").conn;
-const genericHelper = require("../models/generic-helper.js")
-const userHelper = require("../models/user-helper.js")
-const examHelper = require("../models/exam-helper.js")
+const genericHelper = require("../utils/generic-helper.js")
+const userHelper = require("../utils/user-helper.js")
+const examHelper = require("../utils/exam-helper.js")
 const mail = require('../config/index.js').nodemailer;
 const models = require('../models/index.js')
 const {Sequelize}=require('sequelize')
@@ -46,9 +46,14 @@ async function checkExamTime(userId, examId,callback) {
             replacements: [userId,examId]
         }).then(function (results, err) {
                 err || results[0].time_remaining <= 0 || results[0].status == 'FINISHED' ?
-                    conn.query('UPDATE attempts SET status="FINISHED" WHERE examid=? and userid=?', {
-                        replacements: [examId, userId]
-                    }).then(function (result, err) {
+                models.Attempts.update({
+                    status: "FINISHED"
+                }, {
+                    where: {
+                        examid:examId,
+                        userid:userId
+                    }
+                }).then(function (result, err) {
                         callback(null)
                     }): callback(results)
                 })
@@ -71,9 +76,9 @@ async function checkOtp(token, otp) {
 }
 
 async function changePass(hashedPassword,sessionId,callback) {
-    await conn.query('update users set password=? where id=?', {
-            replacements: [hashedPassword, sessionId]
-        }).then(function (result, err) {
+    await models.Users.update({
+        password: hashedPassword
+    },{where:{id:sessionId}}).then(function (result, err) {
 callback();
         })
 }
