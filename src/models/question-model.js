@@ -1,4 +1,3 @@
-const {conn} = require('./connect.js')
 const questions = (conn, DataTypes) => {
     const Questions = conn.define('questions', {
         id: {
